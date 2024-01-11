@@ -1,0 +1,9 @@
+#ifndef CONST_H_INCLUDED
+#define CONST_H_INCLUDED
+
+#define TAILLE_BLOC 34
+
+enum{HAUT,BAS,GAUCHE,DROITE};
+enum{VIDE,MUR,FINN};
+
+#endif

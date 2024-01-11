@@ -1,77 +1,73 @@
 #include <SDL2/SDL.h>
+#include <stdio.h>
+#include <SDL2/SDL_image.h>
 
+void jouer(SDL_Window* window, SDL_Renderer* renderer);
 
-int SDL_main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
     SDL_Event event;
-    int quit = 0;
-    int x = 50, y = 50; // Position du carré rouge
+    int continuer = 1;
 
-    // Initialisation de SDL
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        SDL_Log("Erreur lors de l'initialisation de SDL : %s", SDL_GetError());
+        printf("Erreur lors de l'initialisation de SDL : %s\n", SDL_GetError());
         return 1;
     }
 
-    // Création de la fenêtre
-    window = SDL_CreateWindow("Jeu de DANOSH",
+    window = SDL_CreateWindow("ESGI SIMULATOR",
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               1240, 720, SDL_WINDOW_SHOWN);
     if (window == NULL) {
-        SDL_Log("Erreur lors de la création de la fenêtre : %s", SDL_GetError());
+        printf("Erreur lors de la création de la fenêtre : %s\n", SDL_GetError());
         SDL_Quit();
         return 1;
     }
 
-    // Création du renderer
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL) {
-        SDL_Log("Erreur lors de la création du renderer : %s", SDL_GetError());
+        printf("Erreur lors de la création du renderer : %s\n", SDL_GetError());
         SDL_DestroyWindow(window);
         SDL_Quit();
         return 1;
     }
 
-    while (!quit) {
-        // Gestion des événements
+    SDL_Surface *menu = IMG_Load("images/esgi-sim.png");
+    if (menu == NULL) {
+        printf("Erreur lors du chargement du menu : %s\n", SDL_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+
+    SDL_Texture *menuTexture = SDL_CreateTextureFromSurface(renderer, menu);
+    SDL_FreeSurface(menu);
+    if (menuTexture == NULL) {
+        printf("Erreur lors de la création de la texture : %s\n", SDL_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
+
+ while (continuer) {
         while (SDL_PollEvent(&event)) {
-            if (event.type == SDL_QUIT) {
-                quit = 1;
-            } else if (event.type == SDL_KEYDOWN) {
-                switch (event.key.keysym.sym) {
-                    case SDLK_UP:
-                        y -= 100; // Déplacer vers le haut
-                        break;
-                    case SDLK_DOWN:
-                        y += 100; // Déplacer vers le bas
-                        break;
-                    case SDLK_LEFT:
-                        x -= 100; // Déplacer vers la gauche
-                        break;
-                    case SDLK_RIGHT:
-                        x += 100; // Déplacer vers la droite
-                        break;
-                    default:
-                        break;
-                }
+            if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
+                continuer = 0;
+            } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
+                jouer(window, renderer);
+                continuer =1;
+                break;
             }
         }
 
-        // Effacer l'écran
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
-
-        // Dessiner un carré rouge
-        SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255);
-        SDL_Rect rect = { x, y, 50, 50 };
-        SDL_RenderFillRect(renderer, &rect);
-
-        // Afficher le rendu
+        SDL_RenderCopy(renderer, menuTexture, NULL, NULL);
         SDL_RenderPresent(renderer);
     }
 
-    // Libérer la mémoire et quitter SDL
+    SDL_DestroyTexture(menuTexture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
