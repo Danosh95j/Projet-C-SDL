@@ -4,14 +4,19 @@
 #include "const.h"
 #include "game.h"
 
-void jouer(SDL_Window* window, SDL_Renderer* renderer) {
-    void deathrun(SDL_Window* window, SDL_Renderer* renderer);
+#include <SDL2/SDL.h>
+#include <stdio.h>
+#include <SDL2/SDL_image.h>
+#include "const.h"
+#include "game.h"
+
+void deathrun(SDL_Window* window, SDL_Renderer* renderer) {
     
     SDL_Surface *finn[BAS+1] = {NULL};
     SDL_Texture *finnTexture[BAS+1] = {NULL};
     SDL_Rect positionJoueur = {3 * TAILLE_BLOC, 3 * TAILLE_BLOC, TAILLE_BLOC, TAILLE_BLOC};
     SDL_Event event;
-    int continuer = 1;
+    int continuer = 2;
     int direction = BAS; 
 
    
@@ -40,26 +45,11 @@ void jouer(SDL_Window* window, SDL_Renderer* renderer) {
             } else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
-                        deathrun(window, renderer);
-                        continuer = 2;
+                        continuer = 0;
                         break;
                     case SDLK_UP:
                         positionJoueur.y -= TAILLE_BLOC; 
                         direction = HAUT;  
-                        break;
-                    case SDLK_DOWN:
-                        positionJoueur.y += TAILLE_BLOC; 
-                        direction = BAS;  
-                        break;
-                    case SDLK_LEFT:
-                        positionJoueur.x -= TAILLE_BLOC; 
-                        direction = GAUCHE;  
-                        break;
-                    case SDLK_RIGHT:
-                        positionJoueur.x += TAILLE_BLOC; 
-                        direction = DROITE;  
-                        break;
-                    default:
                         break;
                 }
             }

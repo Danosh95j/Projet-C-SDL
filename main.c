@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
-//#include <sqlite/sqlite3.h>   
+// #include <mysql/include/mysql.h>   
 
 void jouer(SDL_Window* window, SDL_Renderer* renderer);
 
