@@ -1,14 +1,20 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
+//#include <sqlite/sqlite3.h>   
 
 void game(SDL_Window* window, SDL_Renderer* renderer);
+
 
 int main(int argc, char* argv[]) {
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
     SDL_Event event;
     int continuer = 1;
+
+    // sqlite3 *db;
+    // int rc = sqlite3_open("test.db", &db);
+
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Erreur lors de l'initialisation de SDL : %s\n", SDL_GetError());

@@ -143,6 +143,7 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
                 }
             }
         }
+<<<<<<< HEAD
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
 
@@ -171,11 +172,11 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
             }
         }
         SDL_RenderCopy(renderer, finnTexture[direction], NULL, &playerPosition);
-
         SDL_RenderPresent(renderer);
 
         SDL_Delay(16);
     }
+
 
     SDL_DestroyTexture(wallTexture);
     SDL_DestroyTexture(woodTexture);
