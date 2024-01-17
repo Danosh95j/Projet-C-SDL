@@ -78,3 +78,4 @@ void jouer(SDL_Window* window, SDL_Renderer* renderer) {
         SDL_DestroyTexture(finnTexture[i]);
     }
 }
+
