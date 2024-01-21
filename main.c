@@ -1,20 +1,36 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
-//#include <sqlite/sqlite3.h>   
+#include "mysql/include/mysql.h"   
+#include <SDL2/SDL_ttf.h>
 
+void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font);
 void game(SDL_Window* window, SDL_Renderer* renderer);
-
+void renderText(const char *text, SDL_Renderer *renderer, TTF_Font *font, int x, int y);
+    int continuer = 1;
 
 int main(int argc, char* argv[]) {
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
     SDL_Event event;
-    int continuer = 1;
 
-    // sqlite3 *db;
-    // int rc = sqlite3_open("test.db", &db);
+    if (TTF_Init() != 0) {
+        fprintf(stderr, "Erreur lors de l'initialisation de SDL_ttf : %s\n", TTF_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return 1;
+    }
 
+    TTF_Font *font = TTF_OpenFont("font/PressStart2P-Regular.ttf", 24);
+    if (font == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de la police : %s\n", TTF_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return 1;
+    }
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Erreur lors de l'initialisation de SDL : %s\n", SDL_GetError());
@@ -62,6 +78,7 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
                 continuer = 0;
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
+                renderWelcomeScreen(renderer, font);
                 game(window, renderer);
                 continuer =1;
                 break;
@@ -78,4 +95,28 @@ int main(int argc, char* argv[]) {
     SDL_DestroyWindow(window);
     SDL_Quit();
     return 0;
+}
+
+void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font) {
+    int welcome = 0;
+    do {
+        SDL_Event welcomeEvent;
+        while (SDL_PollEvent(&welcomeEvent)) {
+            if (welcomeEvent.type == SDL_QUIT) {
+                continuer = 1;
+            } else if (welcomeEvent.type == SDL_KEYDOWN && welcomeEvent.key.keysym.sym == SDLK_SPACE) {
+                welcome =  1;
+            }
+        }
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        SDL_RenderClear(renderer);
+
+        renderText("Bienvenue dans le Quiz de l'ESGI !", renderer, font, 2, 7);
+        renderText("3 Fautes et vous verrez ...", renderer, font, 2, 8);
+        renderText("Appuyez sur la touche ESPACE pour continuer ...", renderer, font, 2, 9);
+
+        SDL_RenderPresent(renderer);
+        SDL_Delay(16);
+    } while (welcome == 0);
 }
