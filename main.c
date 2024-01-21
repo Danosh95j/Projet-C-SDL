@@ -1,17 +1,19 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 #include <SDL2/SDL_image.h>
-// #include <mysql/include/mysql.h>   
+#include "mysql/include/mysql.h"   
 
-void jouer(SDL_Window* window, SDL_Renderer* renderer);
+void game(SDL_Window* window, SDL_Renderer* renderer);
+void deathrun(SDL_Window* window, SDL_Renderer* renderer);
+void revive(SDL_Window *window, SDL_Renderer *renderer);
+void over(SDL_Window *window, SDL_Renderer *renderer);
+void login(SDL_Window *window, SDL_Renderer *renderer);
 
 int main(int argc, char* argv[]) {
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
     SDL_Event event;
-    int continuer = 1;
-    // sqlite3 *db;
-    // int rc = sqlite3_open("test.db", &db);
+    int continueGame = 1;
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Erreur lors de l'initialisation de SDL : %s\n", SDL_GetError());
@@ -20,7 +22,7 @@ int main(int argc, char* argv[]) {
 
     window = SDL_CreateWindow("ESGI SIMULATOR",
                               SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              1240, 720, SDL_WINDOW_SHOWN);
+                              1224, 714, SDL_WINDOW_SHOWN);
     if (window == NULL) {
         printf("Erreur lors de la création de la fenêtre : %s\n", SDL_GetError());
         SDL_Quit();
@@ -54,13 +56,13 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
- while (continuer) {
+ while (continueGame) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
-                continuer = 0;
+                continueGame = 0;
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
-                jouer(window, renderer);
-                continuer =1;
+                game(window, renderer);
+                continueGame =1;
                 break;
             }
         }
