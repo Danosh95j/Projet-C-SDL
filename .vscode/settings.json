@@ -1,6 +1,8 @@
 {
     "files.associations": {
+        "*.embeddedhtml": "html",
         "sdl_image.h": "c",
-        "sqlite3.h": "c"
+        "sqlite3.h": "c",
+        "includes.h": "c"
     }
 }

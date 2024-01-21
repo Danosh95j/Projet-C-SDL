@@ -1,17 +1,15 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <SDL2/SDL_image.h>
-#include "mysql/include/mysql.h"   
-#include <SDL2/SDL_ttf.h>
+#include "headers/includes.h"
 
 void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font);
-void game(SDL_Window* window, SDL_Renderer* renderer);
+void game(SDL_Window* window, SDL_Renderer* renderer, Player *player);
 void deathrun(SDL_Window* window, SDL_Renderer* renderer);
 void revive(SDL_Window *window, SDL_Renderer *renderer);
 void over(SDL_Window *window, SDL_Renderer *renderer);
-void login(SDL_Window *window, SDL_Renderer *renderer);
+void login(SDL_Window *window, SDL_Renderer *renderer, Player *player);
 void renderText(const char *text, SDL_Renderer *renderer, TTF_Font *font, int x, int y);
-    int continueGame = 1;
+int continueGame = 1;
+
+Player player;
 
 int main(int argc, char* argv[]) {
     SDL_Window* window = NULL;
@@ -82,8 +80,9 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
                 continueGame = 0;
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
-                renderWelcomeScreen(renderer, font);
-                game(window, renderer);
+                // renderWelcomeScreen(renderer, font);
+                // game(window, renderer, player);
+                login(window, renderer, &player);
                 continueGame =1;
                 break;
             }
@@ -119,6 +118,9 @@ void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font) {
         renderText("Bienvenue dans le Quiz de l'ESGI !", renderer, font, 2, 7);
         renderText("3 Fautes et vous verrez ...", renderer, font, 2, 8);
         renderText("Appuyez sur la touche ESPACE pour continueGame ...", renderer, font, 2, 9);
+        renderText("Appuyez sur la touche V ", renderer, font, 2, 10);
+        renderText("pour valider votre reponse ... ", renderer, font, 2, 11);
+
 
         SDL_RenderPresent(renderer);
         SDL_Delay(16);

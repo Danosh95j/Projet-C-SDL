@@ -1,12 +1,4 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <string.h>
-#include "headers/const.h"
-#include "headers/game.h"
-#include "mysql/include/mysql.h"
-#include <time.h>
+#include "headers/includes.h"
 
 int map[21][36] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -36,7 +28,7 @@ int map[21][36] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-void game(SDL_Window *window, SDL_Renderer *renderer) {
+void game(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
     SDL_Surface *finn[DOWN + 1] = {NULL};
     SDL_Texture *finnTexture[DOWN + 1] = {NULL};
     SDL_Rect positionWall, positionWood, positionRock, positionGrass;
@@ -223,6 +215,8 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
     char *question = showQuestion();
     formatQuestion(formattedQuestion, question, questionIndex);
     printf("\n%s\n", formattedQuestion);
+    printf("\n%s", player->nickname);
+
 
     int questionId = getAnswers(question);
     char answers[4][256];
@@ -556,10 +550,18 @@ char* showQuestion() {
         MYSQL *conn;
         MYSQL_RES *res;
         MYSQL_ROW row;
-        srand(time(NULL));
+        int rpast = 0;
 
 
-        int questionNumber = rand() % 19 + 1;
+        int questionNumber = rand() % 79 + 1;
+        if(questionNumber == rpast){
+            do{
+                questionNumber = rand() % 79 + 1;
+            }while(rpast == questionNumber);
+        }
+        rpast = questionNumber;
+
+
         conn = mysql_init(NULL);
 
         if (conn == NULL) {
