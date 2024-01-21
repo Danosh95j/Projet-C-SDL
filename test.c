@@ -1,10 +1,10 @@
-#include <SDL2/SDL.h>
+// #include <SDL2/SDL.h>
 #include <stdio.h>
-#include <SDL2/SDL_image.h>
+// #include <SDL2/SDL_image.h>
 #include "mysql/include/mysql.h"
 
 
-int SDL_main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     char option;
     int connect = 0;
@@ -64,7 +64,7 @@ int testMySQLConnection()
 {
     MYSQL *conn = mysql_init(NULL);
 
-    if (mysql_real_connect(conn, "localhost", "root", "root", "bdd", 3306, NULL, 0)) {
+    if (mysql_real_connect(conn, "localhost", "root", "root", "esgi-sim", 3306, NULL, 0)) {
         printf("\n\t\t\tDatabase connection successful\n");
         printf("\n\n\t\t\tEnter any keys to continue.......");
         getch();
