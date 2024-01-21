@@ -7,7 +7,7 @@
 void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font);
 void game(SDL_Window* window, SDL_Renderer* renderer);
 void renderText(const char *text, SDL_Renderer *renderer, TTF_Font *font, int x, int y);
-    int continuer = 1;
+    int continueGame = 1;
 
 int main(int argc, char* argv[]) {
     SDL_Window* window = NULL;
@@ -73,14 +73,14 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
- while (continuer) {
+ while (continueGame) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
-                continuer = 0;
+                continueGame = 0;
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
                 renderWelcomeScreen(renderer, font);
                 game(window, renderer);
-                continuer =1;
+                continueGame =1;
                 break;
             }
         }
@@ -103,7 +103,7 @@ void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font) {
         SDL_Event welcomeEvent;
         while (SDL_PollEvent(&welcomeEvent)) {
             if (welcomeEvent.type == SDL_QUIT) {
-                continuer = 1;
+                continueGame = 1;
             } else if (welcomeEvent.type == SDL_KEYDOWN && welcomeEvent.key.keysym.sym == SDLK_SPACE) {
                 welcome =  1;
             }
@@ -114,7 +114,7 @@ void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font) {
 
         renderText("Bienvenue dans le Quiz de l'ESGI !", renderer, font, 2, 7);
         renderText("3 Fautes et vous verrez ...", renderer, font, 2, 8);
-        renderText("Appuyez sur la touche ESPACE pour continuer ...", renderer, font, 2, 9);
+        renderText("Appuyez sur la touche ESPACE pour continueGame ...", renderer, font, 2, 9);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(16);
