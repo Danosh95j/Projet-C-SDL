@@ -6,6 +6,10 @@
 
 void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font);
 void game(SDL_Window* window, SDL_Renderer* renderer);
+void deathrun(SDL_Window* window, SDL_Renderer* renderer);
+void revive(SDL_Window *window, SDL_Renderer *renderer);
+void over(SDL_Window *window, SDL_Renderer *renderer);
+void login(SDL_Window *window, SDL_Renderer *renderer);
 void renderText(const char *text, SDL_Renderer *renderer, TTF_Font *font, int x, int y);
     int continueGame = 1;
 
