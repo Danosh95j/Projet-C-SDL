@@ -1,24 +1,40 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <SDL2/SDL_image.h>
-//#include <sqlite/sqlite3.h>   
+#include "headers/includes.h"
 
-void game(SDL_Window* window, SDL_Renderer* renderer);
+void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font);
+// void game(SDL_Window* window, SDL_Renderer* renderer, Player *player);
 
+// void login(SDL_Window *window, SDL_Renderer *renderer, Player *player);
+void renderText(const char *text, SDL_Renderer *renderer, TTF_Font *font, int x, int y);
+int continueGame = 1;
+
+// Player player;
 
 int main(int argc, char* argv[]) {
     SDL_Window* window = NULL;
     SDL_Renderer* renderer = NULL;
     SDL_Event event;
-    int continuer = 1;
 
-    // sqlite3 *db;
-    // int rc = sqlite3_open("test.db", &db);
+    if (TTF_Init() != 0) {
+        fprintf(stderr, "Erreur lors de l'initialisation de SDL_ttf : %s\n", TTF_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+        return -1;
+    }
 
+    TTF_Font *font = TTF_OpenFont("font/PressStart2P-Regular.ttf", 24);
+    if (font == NULL) {
+        fprintf(stderr, "Erreur lors du chargement de la police : %s\n", TTF_GetError());
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        TTF_Quit();
+        SDL_Quit();
+        return -1;
+    }
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Erreur lors de l'initialisation de SDL : %s\n", SDL_GetError());
-        return 1;
+        return -1;
     }
 
     window = SDL_CreateWindow("ESGI SIMULATOR",
@@ -27,7 +43,7 @@ int main(int argc, char* argv[]) {
     if (window == NULL) {
         printf("Erreur lors de la création de la fenêtre : %s\n", SDL_GetError());
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -35,7 +51,7 @@ int main(int argc, char* argv[]) {
         printf("Erreur lors de la création du renderer : %s\n", SDL_GetError());
         SDL_DestroyWindow(window);
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
     SDL_Surface *menu = IMG_Load("images/esgi-sim.png");
@@ -44,7 +60,7 @@ int main(int argc, char* argv[]) {
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
     SDL_Texture *menuTexture = SDL_CreateTextureFromSurface(renderer, menu);
@@ -54,17 +70,29 @@ int main(int argc, char* argv[]) {
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
- while (continuer) {
+    start(window, renderer, menuTexture);
+    return EXIT_SUCCESS;
+}
+
+void start(SDL_Window *window, SDL_Renderer *renderer, SDL_Texture *menuTexture){
+    SDL_Event event;
+
+    while (continueGame) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
-                continuer = 0;
+                continueGame = 0;
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
-                game(window, renderer);
-                continuer =1;
+                // renderWelcomeScreen(renderer, font);
+                // game(window, renderer, player);
+                registering(window, renderer);
+                continueGame = 1;
                 break;
+            } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_2) {
+                login(window, renderer);
+                continueGame = 1;
             }
         }
 
@@ -77,5 +105,33 @@ int main(int argc, char* argv[]) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return 0;
+    return;
 }
+
+void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font) {
+    int welcome = 0;
+    do {
+        SDL_Event welcomeEvent;
+        while (SDL_PollEvent(&welcomeEvent)) {
+            if (welcomeEvent.type == SDL_QUIT) {
+                continueGame = 1;
+            } else if (welcomeEvent.type == SDL_KEYDOWN && welcomeEvent.key.keysym.sym == SDLK_SPACE) {
+                welcome =  1;
+            }
+        }
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+        SDL_RenderClear(renderer);
+
+        renderText("Bienvenue dans le Quiz de l'ESGI !", renderer, font, 2, 7);
+        renderText("3 Fautes et vous verrez ...", renderer, font, 2, 8);
+        renderText("Appuyez sur la touche ESPACE pour continueGame ...", renderer, font, 2, 9);
+        renderText("Appuyez sur la touche V ", renderer, font, 2, 10);
+        renderText("pour valider votre reponse ... ", renderer, font, 2, 11);
+
+
+        SDL_RenderPresent(renderer);
+        SDL_Delay(16);
+    } while (welcome == 0);
+}
+
