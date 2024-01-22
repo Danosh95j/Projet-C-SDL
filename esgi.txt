@@ -1,0 +1,105 @@
+-- MySQL dump 10.13  Distrib 5.7.24, for Win64 (x86_64)
+--
+-- Host: localhost    Database: esgisim
+-- ------------------------------------------------------
+-- Server version	8.0.36
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `answers`
+--
+
+DROP TABLE IF EXISTS `answers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `answers` (
+  `answer_id` int NOT NULL,
+  `answer_text` varchar(255) NOT NULL,
+  `question_id` int DEFAULT NULL,
+  `is_correct` tinyint(1) NOT NULL,
+  PRIMARY KEY (`answer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `answers`
+--
+
+LOCK TABLES `answers` WRITE;
+/*!40000 ALTER TABLE `answers` DISABLE KEYS */;
+INSERT INTO `answers` VALUES (1,'Un langage de programmation',1,1),(2,'Une lettre de l alphabet',1,0),(3,'Un logiciel de traitement de texte',1,0),(4,'Un systeme d exploitation',1,0),(5,'//',2,1),(6,'#',2,0),(7,'--',2,0),(8,'/* */',2,0),(9,'float',3,0),(10,'char',3,0),(11,'int',3,1),(12,'double',3,0),(13,'variable x;',4,0),(14,'int x;',4,1),(15,'x = 5;',4,0),(16,'declare x;',4,0),(17,'Affiche un message a l ecran',5,0),(18,'Lit une entree depuis le clavier',5,1),(19,'Calcule une valeur mathematique',5,0),(20,'Cree une nouvelle variable',5,0),(21,'==',6,1),(22,'=',6,0),(23,'!=',6,0),(24,'<>',6,0),(25,'display()',7,0),(26,'print()',7,0),(27,'printf()',7,1),(28,'show()',7,0),(29,'*',8,0),(30,'%',8,0),(31,'&',8,0),(32,'$',8,1),(33,'constant x = 5;',9,0),(34,'define x 5;',9,0),(35,'const int x = 5;',9,1),(36,'x = 5 const;',9,0),(37,'Il n y a aucune difference.',10,0),(38,'while est utilise pour les boucles infinies, et for pour les boucles finies.',10,0),(39,'for est utilise pour les boucles infinies, et while pour les boucles finies.',10,0),(40,'for a une initialisation, une condition et une expression de mise a jour tandis que while a seulement une condition.',10,1),(41,'Additionne deux variables',11,0),(42,'Incremente une variable de 1',11,1),(43,'Multiplie deux variables',11,0),(44,'Decremente une variable de 1',11,0),(45,'2',12,0),(46,'4',12,0),(47,'8',12,1),(48,'16',12,0),(49,'string x;',13,0),(50,'char x[50];',13,1),(51,'text x;',13,0),(52,'str x = \'Hello\';',13,0),(53,'true',14,0),(54,'false',14,0),(55,'1',14,1),(56,'0',14,0),(57,'#include <header>',15,0),(58,'include <header.h>',15,0),(59,'#include \"header\"',15,1),(60,'include \"header.h\"',15,0),(61,'Bonjour 3',16,1),(62,'Bonjour %d',16,0),(63,'Bonjour',16,0),(64,'3',16,0),(65,'malloc()',17,1),(66,'allocate()',17,0),(67,'new()',17,0),(68,'memalloc()',17,0),(69,'close(file);',18,0),(70,'fclose(file);',18,1),(71,'end(file);',18,0),(72,'finish(file);',18,0),(73,'Affiche une valeur a l ecran',19,0),(74,'Termine l execution du programme',19,1),(75,'Retourne une valeur de la fonction',19,0),(76,'Redefinit une fonction',19,0),(77,'Arrete la boucle et passe a la suivante',20,1),(78,'Termine le programme immediatement',20,0),(79,'Ignore les iterations suivantes de la boucle',20,0),(80,'Redefinit la boucle',20,0),(82,'Un langage de programmation de haut niveau',21,0),(83,'Un langage de bas niveau spécifique à une architecture',21,1),(84,'Un langage de script',21,0),(85,'Un langage orienté objet',21,0),(86,'Un emplacement de stockage dans la RAM',22,0),(87,'Un fichier de données',22,0),(88,'Un composant du processeur pour le stockage temporaire',22,1),(89,'Un programme exécutable',22,0),(90,'Un type de registre',23,0),(91,'Un code hexadécimal',23,0),(92,'Une abréviation mnémonique pour une instruction',23,1),(93,'Un mode d\'adressage',23,0),(94,'Stocker des données',24,0),(95,'Suivre la position actuelle de l\'exécution du programme',24,1),(96,'Contrôler l\'alimentation du processeur',24,0),(97,'Effectuer des opérations mathématiques',24,0),(98,'Ajouter',25,0),(99,'Déplacer des données d\'un emplacement à un autre',25,1),(100,'Comparer',25,0),(101,'Sauter à une adresse spécifique',25,0),(102,'Une instruction conditionnelle',26,0),(103,'Un registre de destination',26,0),(104,'Une valeur sur laquelle une opération est effectuée',26,1),(105,'Un type de mémoire',26,0),(106,'Une instruction qui change le compteur de programme',27,1),(107,'Une instruction qui dépend d\'une condition spécifique',27,0),(108,'Une instruction pour accéder à la mémoire',27,0),(109,'Une instruction arithmétique',27,0),(110,'Déplacer des données depuis la mémoire',28,0),(111,'Effectuer un saut inconditionnel',28,1),(112,'Comparer des valeurs',28,0),(113,'Charger des données depuis la mémoire',28,0),(114,'32 bits',29,1),(115,'16 bits',29,0),(116,'64 bits',29,0),(117,'8 bits',29,0),(118,'Utiliser une valeur constante comme opérande',30,1),(119,'Accéder directement à une adresse mémoire',30,0),(120,'Indirectement accéder à une adresse mémoire',30,0),(121,'Déplacer des données entre registres',30,0),(122,'Soustraire',31,0),(123,'Ajouter',31,1),(124,'Déplacer des données',31,0),(125,'Comparer des valeurs',31,0),(126,'Stocker des données temporaires',32,0),(127,'Indiquer la position mémoire d\'un tableau',32,1),(128,'Contrôler le flux d\'exécution',32,0),(129,'Effectuer des opérations logiques',32,0),(130,'Comparer des valeurs sans modifier les opérandes',33,1),(131,'Copier des données',33,0),(132,'Convertir des données',33,0),(133,'Compresser des données',33,0),(134,'Unité Logique et Arithmétique',34,1),(135,'Adresse de Localisation Universelle',34,0),(136,'Accès Limité d\'Utilisateur',34,0),(137,'Assemblage Logique Unifié',34,0),(138,'Soustraire',35,1),(139,'Ajouter',35,0),(140,'Comparer des valeurs',35,0),(141,'Déplacer des données',35,0),(142,'Charger des données depuis la mémoire',36,0),(143,'Effectuer une opération logique',36,0),(144,'Mettre le processeur en mode d\'arrêt',36,1),(145,'Effectuer un saut conditionnel',36,0),(146,'Utiliser une valeur constante comme opérande',37,0),(147,'Accéder directement à une adresse mémoire',37,0),(148,'Accéder à une adresse mémoire à travers un registre',37,1),(149,'Utiliser une instruction conditionnelle',37,0),(150,'Effectuer une opération logique ET',38,1),(151,'Déplacer des données',38,0),(152,'Ajouter',38,0),(153,'Comparer des valeurs',38,0),(154,'Une adresse relative à la position actuelle du compteur de programme',39,1),(155,'Une adresse mémoire constante',39,0),(156,'Une instruction conditionnelle',39,0),(157,'Une instruction arithmétique',39,0),(158,'CALL est utilisé pour appeler une sous-routine, JMP pour sauter à une adresse spécifique',40,1),(159,'CALL effectue un saut conditionnel, tandis que JMP effectue un saut inconditionnel',40,0),(160,'CALL est utilisé pour effectuer des appels système, JMP pour des appels de fonctions',40,0),(161,'CALL et JMP sont interchangeables, utilisés de manière équivalente',40,1),(162,'var',41,1),(163,'let',41,0),(164,'const',41,0),(165,'int',41,0),(166,'alert()',42,1),(167,'prompt()',42,0),(168,'confirm()',42,0),(169,'log()',42,0),(170,'== compare la valeur, === compare la valeur et le type',43,1),(171,'== compare la valeur et le type, === compare la valeur',43,0),(172,'== et === sont équivalents',43,0),(173,'== et === sont utilisés pour l\'affectation, pas pour la comparaison',43,0),(174,'53',44,1),(175,'8',44,0),(176,'35',44,0),(177,'undefined',44,0),(178,'Math.round()',45,1),(179,'Math.floor()',45,0),(180,'Math.ceil()',45,0),(181,'Math.random()',45,0),(182,'push()',46,1),(183,'append()',46,0),(184,'addToEnd()',46,0),(185,'insert()',46,0),(186,'boolean',47,1),(187,'string',47,0),(188,'number',47,0),(189,'object',47,0),(190,'for...in',48,1),(191,'while',48,0),(192,'for',48,0),(193,'do...while',48,0),(194,'pop()',49,1),(195,'remove()',49,0),(196,'delete()',49,0),(197,'shift()',49,0),(198,'Math.random()',50,1),(199,'random()',50,0),(200,'generateRandom()',50,0),(201,'rand()',50,0),(202,'(param) => { }',51,1),(203,'function(param) { }',51,0),(204,'fn(param) => { }',51,0),(205,'lambda(param) => { }',51,0),(206,'concat()',52,1),(207,'join()',52,0),(208,'merge()',52,0),(209,'concatenate()',52,0),(210,'class MyClass { }',53,1),(211,'new class MyClass { }',53,0),(212,'function MyClass() { }',53,0),(213,'MyClass = {}',53,0),(214,'click',54,1),(215,'hover',54,0),(216,'change',54,0),(217,'keydown',54,0),(218,'toLowerCase()',55,1),(219,'toLower()',55,0),(220,'caseLower()',55,0),(221,'lowerCase()',55,0),(222,'element.classList.add()',56,1),(223,'element.addClass()',56,0),(224,'element.setAttribute()',56,0),(225,'element.addClassName()',56,0),(226,'reverse()',57,1),(227,'flip()',57,0),(228,'invert()',57,0),(229,'rotate()',57,0),(230,'||=',58,1),(231,'?=',58,0),(232,'?:',58,0),(233,'//=',58,0),(234,'Object.keys()',59,1),(235,'length()',59,0),(236,'count()',59,0),(237,'size()',59,0),(238,'object',60,1),(239,'string',60,0),(240,'number',60,0),(241,'undefined',60,0),(242,'cat',61,1),(243,'more',61,0),(244,'ls',61,0),(245,'echo',61,0),(246,'/etc',62,1),(247,'/var',62,0),(248,'/home',62,0),(249,'/bin',62,0),(250,'passwd',63,1),(251,'password',63,0),(252,'chpass',63,0),(253,'usermod',63,0),(254,'ls',64,1),(255,'list',64,0),(256,'dir',64,0),(257,'show',64,0),(258,'useradd',65,1),(259,'adduser',65,0),(260,'newuser',65,0),(261,'createuser',65,0),(262,'nano',66,1),(263,'vim',66,0),(264,'emacs',66,0),(265,'gedit',66,0),(266,'cp',67,1),(267,'mv',67,0),(268,'copy',67,0),(269,'move',67,0),(270,'tar -zxvf',68,1),(271,'unzip',68,0),(272,'untar',68,0),(273,'gzip -d',68,0),(274,'ifconfig',69,1),(275,'ipconfig',69,0),(276,'netstat',69,0),(277,'route',69,0),(278,'rm -r',70,1),(279,'delete',70,0),(280,'rmdir',70,0),(281,'del',70,0),(282,'df',71,1),(283,'du',71,0),(284,'disk',71,0),(285,'free',71,0),(286,'ps',72,1),(287,'top',72,0),(288,'kill',72,0),(289,'status',72,0),(290,'Change mode',73,1),(291,'Change directory',73,0),(292,'Create home',73,0),(293,'Copy mode',73,0),(294,'grep',74,1),(295,'search',74,0),(296,'find',74,0),(297,'locate',74,0),(298,'ifconfig',75,1),(299,'netstat',75,0),(300,'ipconfig',75,0),(301,'lsusb',75,0),(302,'shutdown',76,1),(303,'halt',76,0),(304,'reboot',76,0),(305,'stop',76,0),(306,'Domain Name System',77,1),(307,'Dynamic Name Server',77,0),(308,'Directory Naming System',77,0),(309,'Digital Network Service',77,0),(310,'apt-get install',78,1),(311,'yum install',78,0),(312,'installpkg',78,0),(313,'pkgadd',78,0),(314,'rm',79,1),(315,'delete',79,0),(316,'del',79,0),(317,'erase',79,0),(318,'Graphical User Interface',80,1),(319,'General User Interface',80,0),(320,'Graphical Universal Interface',80,0),(321,'General User Interaction',80,0);
+/*!40000 ALTER TABLE `answers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `player`
+--
+
+DROP TABLE IF EXISTS `player`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `player` (
+  `player_id` int NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(255) NOT NULL,
+  `score` int DEFAULT '0',
+  `position_x` float DEFAULT NULL,
+  `position_y` float DEFAULT NULL,
+  `questionNum` int DEFAULT NULL,
+  PRIMARY KEY (`player_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `player`
+--
+
+LOCK TABLES `player` WRITE;
+/*!40000 ALTER TABLE `player` DISABLE KEYS */;
+INSERT INTO `player` VALUES (63,'veradsv',4,442,578,NULL),(64,'donnesh',0,374,306,NULL),(65,'prout',0,612,476,NULL),(66,'azerty',0,612,476,NULL),(67,'stephane',0,612,476,NULL);
+/*!40000 ALTER TABLE `player` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `questions`
+--
+
+DROP TABLE IF EXISTS `questions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `questions` (
+  `question_id` int NOT NULL,
+  `question_text` varchar(255) NOT NULL,
+  PRIMARY KEY (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `questions`
+--
+
+LOCK TABLES `questions` WRITE;
+/*!40000 ALTER TABLE `questions` DISABLE KEYS */;
+INSERT INTO `questions` VALUES (1,'Qu est ce que le C?'),(2,'Quel est le symbole utilise pour les commentaires sur une seule ligne en C?'),(3,'Quel est le type de donnees utilise pour stocker des nombres entiers en C?'),(4,'Comment declarez-vous une variable en C?'),(5,'Que fait l instruction scanf en C?'),(6,'Comment comparez vous deux valeurs pour l egalite en C?'),(7,'Quelle est la fonction utilisee pour afficher du texte a l ecran en C?'),(8,'Quel operateur est utilise pour acceder a la valeur d une variable en C?'),(9,'Comment definissez-vous une constante en C?'),(10,'Quelle est la difference entre \"while\" et \"for\" en C?'),(11,'Que fait l operateur \"++\" en C?'),(12,'Quelle est la taille d un type de donnees \"double\" en octets en C?'),(13,'Comment declarez-vous une chaine de caracteres en C?'),(14,'Quel est le resultat de l expression logique (5 > 3) && (4 < 6) en C?'),(15,'Comment incluez-vous un fichier d en-tete standard en C?'),(16,'Quelle est la sortie de la fonction printf(\"Bonjour %d\", 3); en C?'),(17,'Quelle est la fonction utilisee pour allouer de la memoire dynamique en C?'),(18,'Comment fermez-vous un fichier en C apres l avoir ouvert?'),(19,'Quel est le role de la fonction \"return\" en C?'),(20,'Que fait l instruction \"break\" dans une boucle en C?'),(21,'Qu\'est-ce que l\'assembleur ?'),(22,'Qu\'est-ce qu\'un registre en assembleur ?'),(23,'Que signifie le terme \"mnémonique\" en assembleur ?'),(24,'Quelle est la fonction principale du compteur de programme (PC) ?'),(25,'Que représente l\'instruction MOV en assembleur ?'),(26,'Qu\'est-ce qu\'un opérande en assembleur ?'),(27,'Qu\'est-ce qu\'une instruction conditionnelle en assembleur ?'),(28,'Quel est le rôle de l\'instruction JMP en assembleur ?'),(29,'Quelle est la taille typique d\'un octet en assembleur ?'),(30,'Qu\'est-ce que le mode d\'adressage immédiat ?'),(31,'Quel est le rôle de l\'instruction ADD en assembleur ?'),(32,'Quelle est la fonction du registre d\'index en assembleur ?'),(33,'Qu\'est-ce que l\'instruction CMP fait en assembleur ?'),(34,'Quelle est la signification de l\'acronyme \"ALU\" en assembleur ?'),(35,'Qu\'est-ce que l\'instruction SUB réalise en assembleur ?'),(36,'Quel est l\'effet de l\'instruction HLT en assembleur ?'),(37,'Qu\'est-ce que le mode d\'adressage indirect ?'),(38,'Quel est le rôle de l\'instruction AND en assembleur ?'),(39,'Que signifie l\'acronyme \"PC-relative\" en assembleur ?'),(40,'Quelle est la différence entre CALL et JMP en assembleur ?'),(41,'Quel mot-clé est utilisé pour déclarer une variable en JavaScript ?'),(42,'Quelle méthode est utilisée pour afficher une boîte de dialogue dans JavaScript ?'),(43,'Quelle est la différence entre \"==\" et \"===\" en JavaScript ?'),(44,'Quel est le résultat de l\'expression 5 + \"3\" en JavaScript ?'),(45,'Quelle fonction est utilisée pour arrondir un nombre à l\'entier le plus proche en JavaScript ?'),(46,'Quelle méthode est utilisée pour ajouter un élément à la fin d\'un tableau en JavaScript ?'),(47,'Quel est le type de données de la valeur \"true\" en JavaScript ?'),(48,'Quelle boucle est utilisée pour parcourir les propriétés d\'un objet en JavaScript ?'),(49,'Quelle méthode est utilisée pour supprimer le dernier élément d\'un tableau en JavaScript ?'),(50,'Quelle fonction est utilisée pour générer un nombre aléatoire en JavaScript ?'),(51,'Quelle est la syntaxe correcte pour une fonction fléchée en JavaScript ?'),(52,'Quelle méthode est utilisée pour concaténer deux chaînes en JavaScript ?'),(53,'Quelle déclaration est utilisée pour créer une classe en JavaScript ?'),(54,'Quel événement est déclenché lorsqu\'un élément HTML est cliqué en JavaScript ?'),(55,'Quelle fonction est utilisée pour convertir une chaîne en minuscules en JavaScript ?'),(56,'Quelle est la méthode correcte pour ajouter une classe à un élément en JavaScript ?'),(57,'Quelle méthode est utilisée pour inverser l\'ordre des éléments d\'un tableau en JavaScript ?'),(58,'Quel opérateur est utilisé pour définir une valeur par défaut dans une déstructuration en JavaScript ?'),(59,'Quelle méthode est utilisée pour obtenir la longueur d\'un objet en JavaScript ?'),(60,'Quel est le résultat de l\'expression typeof null en JavaScript ?'),(61,'Quelle commande est utilisée pour afficher le contenu d\'un fichier en ligne de commande sous Linux ?'),(62,'Quel répertoire est utilisé pour stocker les fichiers de configuration système sous Linux ?'),(63,'Quelle commande est utilisée pour changer le mot de passe d\'un utilisateur sous Linux ?'),(64,'Quelle commande permet de lister tous les fichiers et répertoires dans un répertoire sous Linux ?'),(65,'Quelle commande est utilisée pour créer un nouvel utilisateur sous Linux ?'),(66,'Quel éditeur de texte est souvent utilisé en ligne de commande sous Linux ?'),(67,'Quelle commande est utilisée pour copier un fichier sous Linux ?'),(68,'Quelle commande est utilisée pour décompresser un fichier tar.gz sous Linux ?'),(69,'Quelle commande est utilisée pour afficher l\'adresse IP d\'une machine sous Linux ?'),(70,'Quelle commande est utilisée pour supprimer un répertoire et son contenu sous Linux ?'),(71,'Quelle commande est utilisée pour afficher l\'espace disque utilisé et disponible sur un système Linux ?'),(72,'Quelle commande est utilisée pour afficher les processus en cours d\'exécution sous Linux ?'),(73,'Quel est le rôle de la commande \"chmod\" sous Linux ?'),(74,'Quelle commande est utilisée pour rechercher du texte dans un fichier sous Linux ?'),(75,'Quelle commande est utilisée pour énumérer toutes les interfaces réseau sur un système Linux ?'),(76,'Quelle commande est utilisée pour arrêter proprement un système Linux ?'),(77,'Quelle est la signification de l\'acronyme \"DNS\" en informatique ?'),(78,'Quelle commande est utilisée pour installer un nouveau logiciel depuis les dépôts sous Linux ?'),(79,'Quelle commande est utilisée pour supprimer un fichier sous Linux ?'),(80,'Quelle est la signification de l\'acronyme \"GUI\" en informatique ?');
+/*!40000 ALTER TABLE `questions` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-01-22 23:05:01
