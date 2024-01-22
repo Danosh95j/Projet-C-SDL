@@ -1,13 +1,6 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <SDL2/SDL_image.h>
-#include "mysql/include/mysql.h"   
+#include "headers/includes.h"
 
-void game(SDL_Window* window, SDL_Renderer* renderer);
-void deathrun(SDL_Window* window, SDL_Renderer* renderer);
-
-
-void over(SDL_Window *window, SDL_Renderer *renderer) {
+void over(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
     SDL_Event event;
     int continueGame = 3;
 
@@ -27,13 +20,14 @@ void over(SDL_Window *window, SDL_Renderer *renderer) {
         SDL_DestroyWindow(window);
         SDL_Quit();
     }
- while (continueGame) {
+    while (continueGame) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
                 continueGame = 0;
+                start(window, renderer, menuTexture);
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
-                deathrun(window, renderer);
-                continueGame =0;
+                continueGame = 1;
+                game(window, renderer, player);
                 break;
             }
         }

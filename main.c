@@ -1,17 +1,13 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <SDL2/SDL_image.h>
-#include "mysql/include/mysql.h"   
-#include <SDL2/SDL_ttf.h>
+#include "headers/includes.h"
 
 void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font);
-void game(SDL_Window* window, SDL_Renderer* renderer);
-void deathrun(SDL_Window* window, SDL_Renderer* renderer);
-void revive(SDL_Window *window, SDL_Renderer *renderer);
-void over(SDL_Window *window, SDL_Renderer *renderer);
-void login(SDL_Window *window, SDL_Renderer *renderer);
+// void game(SDL_Window* window, SDL_Renderer* renderer, Player *player);
+
+// void login(SDL_Window *window, SDL_Renderer *renderer, Player *player);
 void renderText(const char *text, SDL_Renderer *renderer, TTF_Font *font, int x, int y);
-    int continueGame = 1;
+int continueGame = 1;
+
+// Player player;
 
 int main(int argc, char* argv[]) {
     SDL_Window* window = NULL;
@@ -23,7 +19,7 @@ int main(int argc, char* argv[]) {
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
     TTF_Font *font = TTF_OpenFont("font/PressStart2P-Regular.ttf", 24);
@@ -33,12 +29,12 @@ int main(int argc, char* argv[]) {
         SDL_DestroyWindow(window);
         TTF_Quit();
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
     if (SDL_Init(SDL_INIT_VIDEO) != 0) {
         printf("Erreur lors de l'initialisation de SDL : %s\n", SDL_GetError());
-        return 1;
+        return -1;
     }
 
     window = SDL_CreateWindow("ESGI SIMULATOR",
@@ -47,7 +43,7 @@ int main(int argc, char* argv[]) {
     if (window == NULL) {
         printf("Erreur lors de la création de la fenêtre : %s\n", SDL_GetError());
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -55,7 +51,7 @@ int main(int argc, char* argv[]) {
         printf("Erreur lors de la création du renderer : %s\n", SDL_GetError());
         SDL_DestroyWindow(window);
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
     SDL_Surface *menu = IMG_Load("images/esgi-sim.png");
@@ -64,7 +60,7 @@ int main(int argc, char* argv[]) {
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
     SDL_Texture *menuTexture = SDL_CreateTextureFromSurface(renderer, menu);
@@ -74,19 +70,29 @@ int main(int argc, char* argv[]) {
         SDL_DestroyRenderer(renderer);
         SDL_DestroyWindow(window);
         SDL_Quit();
-        return 1;
+        return -1;
     }
 
- while (continueGame) {
+    start(window, renderer, menuTexture);
+    return EXIT_SUCCESS;
+}
+
+void start(SDL_Window *window, SDL_Renderer *renderer, SDL_Texture *menuTexture){
+    SDL_Event event;
+
+    while (continueGame) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
                 continueGame = 0;
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
                 // renderWelcomeScreen(renderer, font);
-                // game(window, renderer);
-                game(window, renderer);
-                continueGame =1;
+                // game(window, renderer, player);
+                registering(window, renderer);
+                continueGame = 1;
                 break;
+            } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_2) {
+                login(window, renderer);
+                continueGame = 1;
             }
         }
 
@@ -99,7 +105,7 @@ int main(int argc, char* argv[]) {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-    return 0;
+    return;
 }
 
 void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font) {
@@ -119,7 +125,10 @@ void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font) {
 
         renderText("Bienvenue dans le Quiz de l'ESGI !", renderer, font, 2, 7);
         renderText("3 Fautes et vous verrez ...", renderer, font, 2, 8);
-        renderText("Appuyez sur la touche ESPACE pour continuer ...", renderer, font, 2, 9);
+        renderText("Appuyez sur la touche ESPACE pour continueGame ...", renderer, font, 2, 9);
+        renderText("Appuyez sur la touche V ", renderer, font, 2, 10);
+        renderText("pour valider votre reponse ... ", renderer, font, 2, 11);
+
 
         SDL_RenderPresent(renderer);
         SDL_Delay(16);

@@ -1,13 +1,5 @@
-#include <SDL2/SDL.h>
-#include <stdio.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-#include <string.h>
-#include "headers/const.h"
-#include "headers/game.h"
-#include "mysql/include/mysql.h"
-#include <time.h>
-#include "curl/curl.h"
+#include "headers/includes.h"
+int zqsd = 0;
 
 int map[21][36] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -37,7 +29,12 @@ int map[21][36] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-void game(SDL_Window *window, SDL_Renderer *renderer) {
+void game(SDL_Window *window, SDL_Renderer *renderer, Player *player) { 
+    printf("\nDans la fonction game() = %s", player->nickname);
+    printf("\nDans la fonction game() = %d", player->score);
+    printf("\nDans la fonction game() = %d", player->posPlayer_x);
+    printf("\nDans la fonction game() = %d", player->posPlayer_y);
+
     SDL_Surface *finn[DOWN + 1] = {NULL};
     SDL_Texture *finnTexture[DOWN + 1] = {NULL};
     SDL_Rect positionWall, positionWood, positionRock, positionGrass;
@@ -55,10 +52,17 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
 
     SDL_Surface *grass;
     SDL_Texture *grassTexture;
+
     int continueGame = 1;
     int questionIndex = 1;
     int direction = DOWN;
-    int score = 0;
+
+    if(player->score < 1)
+        player->score = 0;
+    
+    playerPosition.x = player->posPlayer_x;
+    playerPosition.y = player->posPlayer_y;
+    
     int wrong = 0;
 
     if (TTF_Init() != 0) {
@@ -86,7 +90,8 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
         SDL_Quit();
         return ;
     }
-    TTF_Font *questionFont = TTF_OpenFont("font/PressStart2P-Regular.ttf", 14);
+
+    TTF_Font *questionFont = TTF_OpenFont("font/PressStart2P-Regular.ttf", 12);
     if (questionFont == NULL) {
         fprintf(stderr, "Erreur lors du chargement de la police : %s\n", TTF_GetError());
         SDL_DestroyRenderer(renderer);
@@ -109,6 +114,7 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
     get_zqsd();
     printf("La valeur de zqsd est a %d\n", zqsd);
 
+    printf("\n");
     for (int i = 0; i < 4; i++) {
         char filename[50];
         sprintf(filename, "images/tile00%d.bmp", i);
@@ -225,6 +231,12 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
     char *question = showQuestion();
     formatQuestion(formattedQuestion, question, questionIndex);
     printf("\n%s\n", formattedQuestion);
+    char formattedScore[20];
+
+    formatScore(player->score, formattedScore, sizeof(formattedScore));
+    printf("%s\n", formattedScore);
+    char errors[20] = "Fautes : ";
+    snprintf(errors, sizeof(errors), "%d", wrong);
 
     int questionId = getAnswers(question);
     char answers[4][256];
@@ -238,6 +250,8 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
     while (continueGame) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
+                savePosition(player);
+                saveScore(player->score,player);
                 continueGame = 0;
             } else if (event.type == SDL_KEYDOWN) {
                 printf("Evenement capturé dans le jeu\n");
@@ -245,44 +259,57 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
                 switch (event.key.keysym.sym) {
                     case SDLK_ESCAPE:
                         continueGame = 0;
+                        // start();
+                        // SDL_DestroyTexture(grassTexture);
+                        // SDL_DestroyTexture(rockTexture);
+                        // SDL_DestroyTexture(wallTexture);
+                        // SDL_DestroyTexture(woodTexture);
+
+                        // for (int i = 0; i <= RIGHT; i++) {
+                        //     SDL_DestroyTexture(finnTexture[i]);
+                        // }
+                        // SDL_DestroyRenderer(renderer);
+                        // SDL_DestroyWindow(window);
+                        // SDL_Quit();
                         break;
                     case SDLK_UP:
-                        movePlayer(map, &playerPosition, UP);
+                        movePlayer(map, &playerPosition, UP, player);
                             direction = UP;  
                             break;
                     case SDLK_z:
                         if(zqsd == 1){
-                            movePlayer(map, &playerPosition, UP);
+                            movePlayer(map, &playerPosition, UP, player);
                             direction = UP;  
                             
                         }break;
                     case SDLK_DOWN:
-                        movePlayer(map, &playerPosition, DOWN);
+                        movePlayer(map, &playerPosition, DOWN, player);
+
                         direction = DOWN;
                             break;
                     case SDLK_s:
                         if(zqsd == 1){
-                            movePlayer(map, &playerPosition, DOWN);
+                            movePlayer(map, &playerPosition, DOWN, player);
                             direction = DOWN;
                                 
                         }break;
                     case SDLK_LEFT:
-                        movePlayer(map, &playerPosition, LEFT);
+                        movePlayer(map, &playerPosition, LEFT, player);
                         direction = LEFT;
                         break;
                     case SDLK_q:
                         if(zqsd == 1){
-                            movePlayer(map, &playerPosition, LEFT);
+                            movePlayer(map, &playerPosition, LEFT, player);
                             direction = LEFT;
                             
                         }break;
                     case SDLK_RIGHT:
-                        movePlayer(map, &playerPosition, RIGHT);
+                        movePlayer(map, &playerPosition, RIGHT, player);
                         direction = RIGHT;
                         break;
                     case SDLK_d:
                         if(zqsd == 1){
-                            movePlayer(map, &playerPosition, RIGHT);
+                            movePlayer(map, &playerPosition, RIGHT, player);
                             direction = RIGHT;
                             
                         }break;
@@ -304,8 +331,29 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
                             printf("\nAnswer Number = %d",answerNumber);
                             printf("\nAnswer = %s", answers[answerNumber]);
                             
-                            checkAnswer(answers[answerNumber -1]);
+                            if(checkAnswer(answers[answerNumber -1]) == 1){
+                                formatScore(++player->score, formattedScore, sizeof(formattedScore));
+                                saveScore(player->score, player);
+                            }else{
+                                ++wrong;
+                                --player->score;
+                                if(player->score <= 0){
+                                    formatScore(0, formattedScore, sizeof(formattedScore));
+                                    saveScore(0, player);
+                                    ++player->score;
+                                }
+                                formatScore(player->score, formattedScore, sizeof(formattedScore));
+                                saveScore(player->score, player);
+                            }
 
+                            if(wrong == 3){
+                                continueGame = 2;
+                                initRectangles(map, 9, 4, 13, 11);
+                                initRectangles(map, 9, 25, 13, 32);
+                                initRectangles(map, 15, 4, 19, 11);
+                                initRectangles(map, 15, 25, 19, 32); 
+                                deathrun(window, renderer, player);
+                            }
                             question = showQuestion();
                             formatQuestion(formattedQuestion, question, ++questionIndex);
                             questionId = getAnswers(question);
@@ -347,6 +395,8 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
         renderText(formattedAnswer[3], renderer, answerFont, 2, 7);
 
 
+        renderText(formattedScore, renderer, font, 2, 2);
+
         renderText("A", renderer, font, 6, 10);
         renderText("B", renderer, font, 27, 10);
         renderText("C", renderer, font, 6, 16);
@@ -369,7 +419,7 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
     }
 }
 
-void movePlayer(int map[][36], SDL_Rect *pos, int direction) {
+void movePlayer(int map[][36], SDL_Rect *pos, int direction, Player *player) {
     int new_x = pos->x / BLOC_SIZE;
     int new_y = pos->y / BLOC_SIZE;
 
@@ -396,10 +446,14 @@ void movePlayer(int map[][36], SDL_Rect *pos, int direction) {
 
     if (map[new_y][new_x] != WALL) {
         pos->x = new_x * BLOC_SIZE;
+        player->posPlayer_x = pos->x;
         pos->y = new_y * BLOC_SIZE;
+        player->posPlayer_y = pos->y;
     }
 
-
+    printf("\nplayer->posPlayer_x = %d \n", player->posPlayer_x);
+    printf("\nplayer->posPlayer_y = %d \n", player->posPlayer_y);
+    savePosition(player);
 }
 
 void placeMapTiles(SDL_Rect positionWall, SDL_Rect positionWood, SDL_Rect positionRock, SDL_Rect positionGrass, SDL_Texture *wallTexture, SDL_Texture *woodTexture, SDL_Texture *rockTexture, SDL_Texture *grassTexture, int map[][36], SDL_Renderer *renderer){
@@ -586,17 +640,17 @@ char* showQuestion() {
         MYSQL *conn;
         MYSQL_RES *res;
         MYSQL_ROW row;
-        int rpast = -1;
+        int rpast = 0;
 
 
-        int questionNumber = rand() % 19 + 1;
+        int questionNumber = rand() % 79 + 1;
         if(questionNumber == rpast){
-            while(rpast != questionNumber){
-                questionNumber = rand() % 19 + 1;
-                
-            }rpast = questionNumber;
+            do{
+                questionNumber = rand() % 79 + 1;
+            }while(rpast == questionNumber);
         }
-       
+        rpast = questionNumber;
+
 
         conn = mysql_init(NULL);
 
@@ -747,6 +801,10 @@ void formatAnswer(char formattedAnswer[4][256], char text[4][256]){
     }
 }
 
+void formatScore(int score, char *formattedString, int maxSize) {
+    snprintf(formattedString, maxSize, "Score : %d", score);
+}
+
 int isRectangleGrass(int startRow, int endRow, int startCol, int endCol, int map[][36]) {
     for (int i = startRow; i <= endRow; i++) {
         for (int j = startCol; j <= endCol; j++) {
@@ -769,7 +827,7 @@ int getRectangle(){
         return 4;
 }
 
-void checkAnswer(char answers[256]) {
+int checkAnswer(char answers[256]) {
     MYSQL *conn;
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -778,14 +836,14 @@ void checkAnswer(char answers[256]) {
 
     if (conn == NULL) {
         fprintf(stderr, "mysql_init() failed\n");
-        return;
+        return EXIT_FAILURE;
     }
 
     if (mysql_real_connect(conn, "localhost", "root", "root", "esgisim", 0, NULL, 0) == NULL) {
         fprintf(stderr, "mysql_real_connect() failed\n");
         printf("mysql_real_connect() failed\n");
         mysql_close(conn);
-        return;
+        return EXIT_FAILURE;
     }
 
     char is_correct[256];
@@ -794,7 +852,7 @@ void checkAnswer(char answers[256]) {
     if (mysql_query(conn, is_correct)) {
         fprintf(stderr, "SELECT is_correct FROM answers WHERE answer_text = '%s' failed: %s\n", answers, mysql_error(conn));
         mysql_close(conn);
-        return;
+        return EXIT_FAILURE;
     }
 
     res = mysql_store_result(conn);
@@ -803,7 +861,7 @@ void checkAnswer(char answers[256]) {
         fprintf(stderr, "mysql_store_result() failed\n");
         printf("mysql_store_result() failed\n");
         mysql_close(conn);
-        return;
+        return EXIT_FAILURE;
     }
 
     row = mysql_fetch_row(res);
@@ -812,7 +870,7 @@ void checkAnswer(char answers[256]) {
         fprintf(stderr, "La réponse n'a pas été trouvée\n");
         mysql_free_result(res);
         mysql_close(conn);
-        return;
+        return EXIT_FAILURE;
     }
 
     int isCorrect = atoi(row[0]);
@@ -821,9 +879,9 @@ void checkAnswer(char answers[256]) {
     mysql_close(conn);
 
     if (isCorrect == 1) {
-        printf("La réponse est correcte !\n");
+        return 1;
     } else {
-        printf("La réponse n'est pas correcte.\n");
+        return 0;
     }
 }
 
@@ -868,4 +926,63 @@ void get_zqsd(){
         }
     }
     fclose(ini);
+}
+void savePosition(Player *player) {
+    MYSQL *conn;
+
+    conn = mysql_init(NULL);
+    if (conn == NULL) {
+        fprintf(stderr, "Erreur lors de l'initialisation de mysql: %s\n", mysql_error(conn));
+        return;
+    }
+
+    if (mysql_real_connect(conn, "localhost", "root", "root", "esgisim", 0, NULL, 0) == NULL) {
+        fprintf(stderr, "Erreur lors de la connexion avec la base de données: %s\n", mysql_error(conn));
+        mysql_close(conn);
+        return;
+    }
+
+    char updateQuery[256];
+    snprintf(updateQuery, sizeof(updateQuery), "UPDATE player SET position_x = %d, position_y = %d WHERE nickname = '%s'", player->posPlayer_x, player->posPlayer_y, player->nickname);
+
+    if (mysql_query(conn, updateQuery)) {
+        fprintf(stderr, "Erreur de syntaxe SQL: %s\n", mysql_error(conn));
+        mysql_close(conn);
+        return;
+    }
+
+    printf("Coordonnees mises a jour !!!!!!!\n");
+
+    mysql_close(conn);
+}
+
+void saveScore(int score, Player *player){
+    MYSQL_RES *res;
+    MYSQL *conn;
+
+    conn = mysql_init(NULL);
+    if (conn == NULL) {
+        fprintf(stderr, "Erreur lors de l'initialisation de mysql: %s\n", mysql_error(conn));
+        return;
+    }
+
+    if (mysql_real_connect(conn, "localhost", "root", "root", "esgisim", 0, NULL, 0) == NULL) {
+        fprintf(stderr, "Erreur lors de la connexion avec la base de données: %s\n", mysql_error(conn));
+        mysql_close(conn);
+        return;
+    }
+
+    char selectQuery[256];
+    snprintf(selectQuery, sizeof(selectQuery), "UPDATE player SET score = '%d' WHERE nickname = '%s'", player->score, player->nickname);
+    if (mysql_query(conn, selectQuery)) {
+        fprintf(stderr, "Erreur de syntaxe SQL: %s\n", mysql_error(conn));
+        mysql_close(conn);
+        return;
+    }
+
+    printf("Score bien mises a jour");
+
+    mysql_close(conn);
+    return;
+
 }

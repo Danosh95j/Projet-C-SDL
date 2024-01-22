@@ -1,16 +1,7 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "headers/const.h"
-#include "headers/game.h"
+#include "headers/includes.h"
 
-void movePlayer(int map[][36], SDL_Rect *pos, int direction);
-void revive(SDL_Window *window, SDL_Renderer *renderer);
-void over(SDL_Window *window, SDL_Renderer *renderer);
 
-void deathrun(SDL_Window *window, SDL_Renderer *renderer) {
+void deathrun(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
     SDL_Surface *finn[4] = {NULL};
     SDL_Texture *finnTexture[4] = {NULL};
     SDL_Rect positionWall, positionWood, playerPosition, obstaclePosition;
@@ -24,7 +15,7 @@ void deathrun(SDL_Window *window, SDL_Renderer *renderer) {
 
     int startTime = SDL_GetTicks();
     int endTime;
-    int continueGame = 1;
+    int continueGame = 2;
     int direction = UP;
     // int frameI = 0;
     // int frameD = 100;
@@ -124,11 +115,11 @@ void deathrun(SDL_Window *window, SDL_Renderer *renderer) {
                         continueGame = 0;
                         break;
                     case SDLK_LEFT:
-                        movePlayer(map, &playerPosition, LEFT);
+                        movePlayer(map, &playerPosition, LEFT, player);
                         direction = UP;
                         break;
                     case SDLK_RIGHT:
-                        movePlayer(map, &playerPosition, RIGHT);
+                        movePlayer(map, &playerPosition, RIGHT, player);
                         direction = UP;
                         break;
                     
@@ -139,7 +130,8 @@ void deathrun(SDL_Window *window, SDL_Renderer *renderer) {
             }
         }
 
-        obstaclePosition.y += 5;
+
+        obstaclePosition.y += 1;
 
         endTime = SDL_GetTicks() - startTime;
 
@@ -149,12 +141,13 @@ void deathrun(SDL_Window *window, SDL_Renderer *renderer) {
         }
 
          if (obstaclePosition.y > playerPosition.x && obstaclePosition.x == playerPosition.x) {
-            over(window, renderer);
-            continueGame = 3; // Le joueur a perdu
+            deadPlayer(player);
+            over(window, renderer, player);
+            continueGame = 3; 
         }
 
         if(endTime >= 15000){
-            revive(window, renderer);
+            revive(window, renderer, player);
             continueGame = 4;
         }
 
@@ -194,3 +187,37 @@ void deathrun(SDL_Window *window, SDL_Renderer *renderer) {
     }
 }
 
+void deadPlayer(Player *player){
+    MYSQL_RES *res;
+    MYSQL *conn;
+
+    conn = mysql_init(NULL);
+    if (conn == NULL) {
+        fprintf(stderr, "Erreur lors de l'initialisation de mysql: %s\n", mysql_error(conn));
+        return;
+    }
+
+    if (mysql_real_connect(conn, "localhost", "root", "root", "esgisim", 0, NULL, 0) == NULL) {
+        fprintf(stderr, "Erreur lors de la connexion avec la base de données: %s\n", mysql_error(conn));
+        mysql_close(conn);
+        return;
+    }
+
+    char selectQuery[256];
+    snprintf(selectQuery, sizeof(selectQuery), "UPDATE player SET score = '%d', position_x = '%d', position_y = '%d' WHERE nickname = '%s'", 0, 18 * BLOC_SIZE, 14 * BLOC_SIZE, player->nickname);
+    if (mysql_query(conn, selectQuery)) {
+        fprintf(stderr, "Erreur de syntaxe SQL: %s\n", mysql_error(conn));
+        mysql_close(conn);
+        return;
+    }
+
+    printf("Joueur bien mise a jour");
+    player->score = 0;
+    player->posPlayer_x = 18 * BLOC_SIZE;
+    player->posPlayer_y = 14 * BLOC_SIZE;
+
+
+    mysql_close(conn);
+    return;
+
+}
