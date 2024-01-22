@@ -28,7 +28,6 @@ int map[21][36] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
 
-
 void game(SDL_Window *window, SDL_Renderer *renderer, Player *player) { 
     printf("\nDans la fonction game() = %s", player->nickname);
     printf("\nDans la fonction game() = %d", player->score);
@@ -90,6 +89,7 @@ void game(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
         SDL_Quit();
         return ;
     }
+
     TTF_Font *questionFont = TTF_OpenFont("font/PressStart2P-Regular.ttf", 12);
     if (questionFont == NULL) {
         fprintf(stderr, "Erreur lors du chargement de la police : %s\n", TTF_GetError());
@@ -109,6 +109,7 @@ void game(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
         SDL_Quit();
         return;
     }
+
 
 
     printf("\n");
@@ -271,6 +272,7 @@ void game(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
                         break;
                     case SDLK_UP:
                     case SDLK_z:
+
                         movePlayer(map, &playerPosition, UP, player);
                         direction = UP;  
                         break;
@@ -330,7 +332,6 @@ void game(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
                                 initRectangles(map, 15, 25, 19, 32); 
                                 deathrun(window, renderer, player);
                             }
-
                             question = showQuestion();
                             formatQuestion(formattedQuestion, question, ++questionIndex);
                             questionId = getAnswers(question);
@@ -362,6 +363,7 @@ void game(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
         renderText(formattedAnswer[1], renderer, answerFont, 2, 5);
         renderText(formattedAnswer[2], renderer, answerFont, 2, 6);
         renderText(formattedAnswer[3], renderer, answerFont, 2, 7);
+
 
         renderText(formattedScore, renderer, font, 2, 2);
 

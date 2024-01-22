@@ -1,3 +1,4 @@
+
 #include "headers/includes.h"
 
 
@@ -30,7 +31,6 @@ void revive(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
                 continueGame = 1;               
                 game(window, renderer, player);
-
                 break;
             }
         }

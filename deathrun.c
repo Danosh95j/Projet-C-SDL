@@ -130,6 +130,7 @@ void deathrun(SDL_Window *window, SDL_Renderer *renderer, Player *player) {
             }
         }
 
+
         obstaclePosition.y += 1;
 
         endTime = SDL_GetTicks() - startTime;

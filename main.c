@@ -134,4 +134,3 @@ void renderWelcomeScreen(SDL_Renderer *renderer, TTF_Font *font) {
         SDL_Delay(16);
     } while (welcome == 0);
 }
-

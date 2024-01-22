@@ -1,0 +1,140 @@
+CREATE TABLE questions (
+    question_id INT PRIMARY KEY,
+    question_text VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE answers (
+    answer_id INT PRIMARY KEY,
+    answer_text VARCHAR(255) NOT NULL,
+    question_id INT,
+    is_correct BOOLEAN NOT NULL
+);
+
+
+INSERT INTO questions (question_id, question_text)
+VALUES
+    (1, 'Qu''est-ce que le C?'),
+    (2, 'Quel est le symbole utilisé pour les commentaires sur une seule ligne en C?'),
+    (3, 'Quel est le type de données utilisé pour stocker des nombres entiers en C?'),
+    (4, 'Comment déclarez-vous une variable en C?'),
+    (5, 'Que fait l''instruction "scanf" en C?'),
+    (6, 'Comment comparez-vous deux valeurs pour l''égalité en C?'),
+    (7, 'Quelle est la fonction utilisée pour afficher du texte à l''écran en C?'),
+    (8, 'Quel opérateur est utilisé pour accéder à la valeur d''une variable en C?'),
+    (9, 'Comment définissez-vous une constante en C?'),
+    (10, 'Quelle est la différence entre "while" et "for" en C?'),
+    (11, 'Que fait l''opérateur "++" en C?'),
+    (12, 'Quelle est la taille d''un type de données "double" en octets en C?'),
+    (13, 'Comment déclarez-vous une chaîne de caractères en C?'),
+    (14, 'Quel est le résultat de l''expression logique (5 > 3) && (4 < 6) en C?'),
+    (15, 'Comment incluez-vous un fichier d''en-tête standard en C?'),
+    (16, 'Quelle est la sortie de la fonction printf("Bonjour %d", 3); en C?'),
+    (17, 'Quelle est la fonction utilisée pour allouer de la mémoire dynamique en C?'),
+    (18, 'Comment fermez-vous un fichier en C après l''avoir ouvert?'),
+    (19, 'Quel est le rôle de la fonction "return" en C?'),
+    (20, 'Que fait l''instruction "break" dans une boucle en C?');
+
+
+ (1, 'Un langage de programmation', 1, TRUE),
+    (2, 'Une lettre de l''alphabet', 1, FALSE),
+    (3, 'Un logiciel de traitement de texte', 1, FALSE),
+    (4, 'Un système d''exploitation', 1, FALSE);
+
+
+INSERT INTO answers (answer_id, answer_text, question_id, is_correct)
+VALUES
+    (5, '//', 2, TRUE),
+    (6, '#', 2, FALSE),
+    (7, '--', 2, FALSE),
+    (8, '/* */', 2, FALSE),
+
+    (9, 'float', 3, FALSE),
+    (10, 'char', 3, FALSE),
+    (11, 'int', 3, TRUE),
+    (12, 'double', 3, FALSE),
+
+    (13, 'variable x;', 4, FALSE),
+    (14, 'int x;', 4, TRUE),
+    (15, 'x = 5;', 4, FALSE),
+    (16, 'declare x;', 4, FALSE),
+
+
+    (17, 'Affiche un message à l''écran', 5, FALSE),
+    (18, 'Lit une entrée depuis le clavier', 5, TRUE),
+    (19, 'Calcule une valeur mathématique', 5, FALSE),
+    (20, 'Crée une nouvelle variable', 5, FALSE),
+
+    (21, '==', 6, TRUE),
+    (22, '=', 6, FALSE),
+    (23, '!=', 6, FALSE),
+    (24, '<>', 6, FALSE),
+
+    (25, 'display()', 7, FALSE),
+    (26, 'print()', 7, FALSE),
+    (27, 'printf()', 7, TRUE),
+    (28, 'show()', 7, FALSE),
+
+    (29, '*', 8, FALSE),
+    (30, '%', 8, FALSE),
+    (31, '&', 8, FALSE),
+    (32, '$', 8, TRUE),
+
+    (33, 'constant x = 5;', 9, FALSE),
+    (34, 'define x 5;', 9, FALSE),
+    (35, 'const int x = 5;', 9, TRUE),
+    (36, 'x = 5 const;', 9, FALSE),
+
+    (37, 'Il n''y a aucune différence.', 10, FALSE),
+    (38, '"while" est utilisé pour les boucles infinies, et "for" pour les boucles finies.', 10, FALSE),
+    (39, '"for" est utilisé pour les boucles infinies, et "while" pour les boucles finies.', 10, FALSE),
+    (40, '"for" a une initialisation, une condition et une expression de mise à jour, tandis que "while" a seulement une condition.', 10, TRUE),
+
+    (41, 'Additionne deux variables', 11, FALSE),
+    (42, 'Incrémente une variable de 1', 11, TRUE),
+    (43, 'Multiplie deux variables', 11, FALSE),
+    (44, 'Décrémente une variable de 1', 11, FALSE),
+
+    (45, '2', 12, FALSE),
+    (46, '4', 12, FALSE),
+    (47, '8', 12, TRUE),
+    (48, '16', 12, FALSE),
+
+    (49, 'string x;', 13, FALSE),
+    (50, 'char x[50];', 13, TRUE),
+    (51, 'text x;', 13, FALSE),
+    (52, 'str x = "Hello";', 13, FALSE),
+
+    (53, 'true', 14, FALSE),
+    (54, 'false', 14, FALSE),
+    (55, '1', 14, TRUE),
+    (56, '0', 14, FALSE),
+
+    (57, '#include <header>', 15, FALSE),
+    (58, 'include <header.h>', 15, FALSE),
+    (59, '#include "header"', 15, TRUE),
+    (60, 'include "header.h"', 15, FALSE),
+
+    (61, 'Bonjour 3', 16, TRUE),
+    (62, 'Bonjour %d', 16, FALSE),
+    (63, 'Bonjour', 16, FALSE),
+    (64, '3', 16, FALSE),
+
+    (65, 'malloc()', 17, TRUE),
+    (66, 'allocate()', 17, FALSE),
+    (67, 'new()', 17, FALSE),
+    (68, 'memalloc()', 17, FALSE),
+
+    (69, 'close(file);', 18, FALSE),
+    (70, 'fclose(file);', 18, TRUE),
+    (71, 'end(file);', 18, FALSE),
+    (72, 'finish(file);', 18, FALSE),
+
+    (73, 'Affiche une valeur à l''écran', 19, FALSE),
+    (74, 'Termine l''exécution du programme', 19, TRUE),
+    (75, 'Retourne une valeur de la fonction', 19, FALSE),
+    (76, 'Redéfinit une fonction', 19, FALSE),
+
+    (77, 'Arrête la boucle et passe à la suivante', 20, TRUE),
+    (78, 'Termine le programme immédiatement', 20, FALSE),
+    (79, 'Ignore les itérations suivantes de la boucle', 20, FALSE),
+    (80, 'Redéfinit la boucle', 20, FALSE);

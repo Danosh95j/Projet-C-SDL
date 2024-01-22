@@ -3,8 +3,6 @@
 
 void start(SDL_Window *window, SDL_Renderer *renderer, SDL_Texture *menuTexture);
 
-
-
 void updateMap(SDL_Rect positionWall, SDL_Rect positionWood, SDL_Rect positionRock, SDL_Rect positionGrass, SDL_Texture *wallTexture, SDL_Texture *woodTexture, SDL_Texture *rockTexture, SDL_Texture *grassTexture, SDL_Renderer *renderer, int map[][36], int answer);
 int isPlayerInZone(SDL_Rect playerPos);
 void placeMapTiles(SDL_Rect positionWall, SDL_Rect positionWood, SDL_Rect positionRock, SDL_Rect positionGrass, SDL_Texture *wallTexture, SDL_Texture *woodTexture, SDL_Texture *rockTexture, SDL_Texture *grassTexture, int map[][36], SDL_Renderer *renderer);
@@ -52,5 +50,4 @@ void saveScore(int score, Player *player);
 
 void checkPlayer(const char *nickname, Player *player, SDL_Window *window, SDL_Renderer *renderer);
 void deadPlayer(Player *player);
-
 #endif

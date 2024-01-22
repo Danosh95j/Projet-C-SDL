@@ -5,6 +5,7 @@ SDL_Rect inputRect;
 SDL_Event event;
 MYSQL *conn;
 
+
 void login(SDL_Window *window, SDL_Renderer *renderer) {
     if (!loadFont()) {
         return;
@@ -16,7 +17,6 @@ void login(SDL_Window *window, SDL_Renderer *renderer) {
     Player player;
     player.posPlayer_x = 18 * BLOC_SIZE;
     player.posPlayer_y = 14 * BLOC_SIZE;
-
     while (continueGame) {
         while (SDL_PollEvent(&event) != 0) {
             if (event.type == SDL_QUIT) {
@@ -35,8 +35,7 @@ void login(SDL_Window *window, SDL_Renderer *renderer) {
                     }
                 }
             } else if (event.type == SDL_KEYDOWN) {
-                if (event.key.keysym.sym == SDLK_RETURN) {
-                    
+                if (event.key.keysym.sym == SDLK_RETURN) {                    
                     checkPlayer(inputText, &player, window, renderer);
                     printf("Texte saisi par player : %s\n", player.nickname);
                     inputText[0] = '\0';
@@ -169,6 +168,7 @@ int loadFont() {
     return 1;
 }
 
+
 void insertPlayer(const char *nickname, Player *player, SDL_Window *window, SDL_Renderer *renderer) {
     MYSQL_RES *res;
 
@@ -205,6 +205,7 @@ void insertPlayer(const char *nickname, Player *player, SDL_Window *window, SDL_
         printf("Ce pseudo existe déjà !\n");
         mysql_free_result(res);
         mysql_close(conn);
+
         game(window, renderer, player);
         return;
     }
