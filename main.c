@@ -82,7 +82,8 @@ int main(int argc, char* argv[]) {
             if (event.type == SDL_QUIT || (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)) {
                 continueGame = 0;
             } else if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_1) {
-                renderWelcomeScreen(renderer, font);
+                // renderWelcomeScreen(renderer, font);
+                // game(window, renderer);
                 game(window, renderer);
                 continueGame =1;
                 break;

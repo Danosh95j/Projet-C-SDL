@@ -7,6 +7,7 @@
 #include "headers/game.h"
 #include "mysql/include/mysql.h"
 #include <time.h>
+#include "curl/curl.h"
 
 int map[21][36] = {
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -105,7 +106,8 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
         return;
     }
 
-
+    get_zqsd();
+    printf("La valeur de zqsd est a %d\n", zqsd);
 
     for (int i = 0; i < 4; i++) {
         char filename[50];
@@ -245,25 +247,45 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
                         continueGame = 0;
                         break;
                     case SDLK_UP:
-                    case SDLK_z:
                         movePlayer(map, &playerPosition, UP);
-                        direction = UP;  
-                        break;
+                            direction = UP;  
+                            break;
+                    case SDLK_z:
+                        if(zqsd == 1){
+                            movePlayer(map, &playerPosition, UP);
+                            direction = UP;  
+                            
+                        }break;
                     case SDLK_DOWN:
-                    case SDLK_s:
                         movePlayer(map, &playerPosition, DOWN);
                         direction = DOWN;
                             break;
+                    case SDLK_s:
+                        if(zqsd == 1){
+                            movePlayer(map, &playerPosition, DOWN);
+                            direction = DOWN;
+                                
+                        }break;
                     case SDLK_LEFT:
-                    case SDLK_q:
                         movePlayer(map, &playerPosition, LEFT);
                         direction = LEFT;
                         break;
+                    case SDLK_q:
+                        if(zqsd == 1){
+                            movePlayer(map, &playerPosition, LEFT);
+                            direction = LEFT;
+                            
+                        }break;
                     case SDLK_RIGHT:
-                    case SDLK_d:
                         movePlayer(map, &playerPosition, RIGHT);
                         direction = RIGHT;
                         break;
+                    case SDLK_d:
+                        if(zqsd == 1){
+                            movePlayer(map, &playerPosition, RIGHT);
+                            direction = RIGHT;
+                            
+                        }break;
                     case SDLK_RETURN:{
                             int zoneNumber = isPlayerInZone(playerPosition);
                             if (zoneNumber > 0 && zoneNumber <= 4) {
@@ -309,7 +331,15 @@ void game(SDL_Window *window, SDL_Renderer *renderer) {
         SDL_RenderClear(renderer);
 
         placeMapTiles(positionWall, positionWood, positionRock, positionGrass, wallTexture, woodTexture, rockTexture, grassTexture, map, renderer);
-        
+         
+        // renderText(tHour, renderer, font, 30, 2);
+        const Uint8 *state = SDL_GetKeyboardState(NULL);
+                    if(state[SDL_SCANCODE_H]){
+                   
+                            char * tHour = printTime();
+                            renderText(tHour, renderer, font, 30, 2);
+                    }
+
         renderText(formattedQuestion, renderer, questionFont, 2, 3);        
         renderText(formattedAnswer[0], renderer, answerFont, 2, 4);
         renderText(formattedAnswer[1], renderer, answerFont, 2, 5);
@@ -556,10 +586,18 @@ char* showQuestion() {
         MYSQL *conn;
         MYSQL_RES *res;
         MYSQL_ROW row;
-        srand(time(NULL));
+        int rpast = -1;
 
 
         int questionNumber = rand() % 19 + 1;
+        if(questionNumber == rpast){
+            while(rpast != questionNumber){
+                questionNumber = rand() % 19 + 1;
+                
+            }rpast = questionNumber;
+        }
+       
+
         conn = mysql_init(NULL);
 
         if (conn == NULL) {
@@ -787,4 +825,47 @@ void checkAnswer(char answers[256]) {
     } else {
         printf("La réponse n'est pas correcte.\n");
     }
+}
+
+char * printTime() {
+    
+    char heure[128];
+    const char *curl_command = "curl -s https://timeapi.io/api/Time/current/zone?timeZone=Europe/Paris";
+
+    FILE *curl_stream = popen(curl_command, "r");
+    if (curl_stream == NULL) {
+        fprintf(stderr, "Erreur lors de l'exécution de la commande curl.\n");
+        return NULL;
+    }
+
+    char * timeText = NULL;
+    while (fgets(heure, 128, curl_stream) != NULL) {
+        timeText = strstr(heure,"time");
+    }
+    
+    char * finalTime = malloc(sizeof(char)*5);
+    strncpy(finalTime, timeText + 7, 5);
+    // strcat(finalTime, "\0");
+    finalTime[5]= '\0';
+    pclose(curl_stream);
+    printf("Heure actuelle : %s\n", finalTime);
+    return finalTime;
+    
+}
+
+void get_zqsd(){
+    char text[255];
+    FILE *ini = fopen("esgi.ini", "r");
+    if (ini == NULL) {
+        fprintf(stderr, "Erreur lors de l'ouverture du fichier esgi.ini\n");
+        exit(EXIT_FAILURE);
+    }
+    while(fscanf(ini, " %[^\n]", text)!= EOF){
+        if(text[0] != ';'){
+            if(strstr(text, "zqsd = On") != NULL){
+                zqsd = 1;
+            }
+        }
+    }
+    fclose(ini);
 }

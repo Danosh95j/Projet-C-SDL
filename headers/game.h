@@ -19,6 +19,11 @@ void formatAnswer(char formattedAnswer[4][256], char text[4][256]);
 int isRectangleGrass(int startRow, int endRow, int startCol, int endCol, int map[][36]);
 int getRectangle();
 void checkAnswer();
+char * printTime();
+void get_zqsd();
+
+int zqsd = 0;
+
 
 
 #endif

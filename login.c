@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "mysql/include/mysql.h"   
+#include "headers/const.h"
+#include "curl/curl.h"
 
 TTF_Font *font;
 SDL_Rect inputRect;
@@ -52,8 +54,8 @@ void insertPlayer(const char *nickname) {
     }
 }
 
-void renderText(const char *text, SDL_Renderer *renderer, TTF_Font *font, int x, int y){
-    SDL_Color textColor = {255, 253, 252};
+void renderText2(const char *text, SDL_Renderer *renderer, TTF_Font *font, int x, int y){
+    SDL_Color textColor = {0, 0, 0};
 
     SDL_Surface *textSurface = TTF_RenderText_Solid(font, text, textColor);
     SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
@@ -74,8 +76,8 @@ void login(SDL_Window *window, SDL_Renderer *renderer) {
 
     char inputText[11] = "";
     int textLimit = 0;
-
-while (continuer) {
+    
+    while (continuer) {
         while (SDL_PollEvent(&event) != 0) {
             if (event.type == SDL_QUIT) {
                 continuer = 0;
@@ -104,12 +106,12 @@ while (continuer) {
             }
         }
 
-
+        
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderClear(renderer);
-        SDL_Surface *usernameSurface = TTF_RenderText_Solid(font, "Username: ", (SDL_Color){0, 0, 0, 255});
-        SDL_Texture *usernameTexture = SDL_CreateTextureFromSurface(renderer, usernameSurface);
-
+        // SDL_Surface *usernameSurface = TTF_RenderText_Solid(font, "Username: ", (SDL_Color){0, 0, 0, 255});
+        // SDL_Texture *usernameTexture = SDL_CreateTextureFromSurface(renderer, usernameSurface);
+        renderText("Username :", renderer, font, 1, 1);
         SDL_Surface *textSurface = TTF_RenderText_Solid(font, inputText, (SDL_Color){0, 0, 0, 255});
         SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
         SDL_RenderCopy(renderer, textTexture, NULL, &inputRect);
